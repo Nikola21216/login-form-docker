@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: login_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: login_form
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  web:
+    build: .
+    container_name: login_web
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./public/:/var/www/html/
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASS: 1234
+      DB_NAME: login_form
+
+volumes:
+  mysql_data:
