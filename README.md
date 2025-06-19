@@ -28,3 +28,7 @@ This project demonstrates a simple PHP login form containerized with Docker Comp
    ```bash
    git clone [repository-url]
    cd login-form-docker
+
+   -------------------
+   Линк към DockerHub хранилищата на образите:
+   https://hub.docker.com/repository/docker/nikola16/login-web/general
